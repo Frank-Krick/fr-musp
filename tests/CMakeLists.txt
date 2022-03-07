@@ -1,4 +1,6 @@
-add_executable(fr_musp_tests pink_noise_tests.cpp)
+add_executable(fr_musp_tests
+  pink_noise/pink_noise_tests.cpp
+  white_noise/white_noise_tests.cpp)
 
 target_link_libraries(fr_musp_tests
   PRIVATE Catch2::Catch2WithMain
