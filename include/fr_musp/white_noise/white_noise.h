@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+namespace fr_musp {
+
 class WhiteNoise {
 public:
     WhiteNoise(): _randomSeed(1) {}
@@ -16,5 +18,7 @@ private:
     static constexpr double _coefficient = 4.6566129e-010;
     int32_t _randomSeed;
 };
+
+}
 
 #endif //FR_MUSP_WHITE_NOISE_H

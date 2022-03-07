@@ -1,6 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <fr_musp/white_noise/white_noise.h>
 
+using namespace fr_musp;
+
 TEST_CASE("WhiteNoise") {
     WhiteNoise whiteNoise;
 
