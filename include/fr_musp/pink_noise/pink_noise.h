@@ -95,6 +95,6 @@ private:
     size_t _currentCounter;
 };
 
-}
+} // namespace fr_musp
 
 #endif //FR_MUSP_PINK_NOISE_H
