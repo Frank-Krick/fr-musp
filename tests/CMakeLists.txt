@@ -1,7 +1,8 @@
 add_executable(fr_musp_tests
   pink_noise/pink_noise_tests.cpp
   white_noise/white_noise_tests.cpp
-  binary_sequence/binary_sequence_tests.cpp)
+  binary_sequence/binary_sequence_tests.cpp
+  window_functions/rectangle_tests.cpp)
 
 target_link_libraries(fr_musp_tests
   PRIVATE Catch2::Catch2WithMain
