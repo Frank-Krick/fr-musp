@@ -9,7 +9,7 @@ class Rectangular {
 public:
     explicit Rectangular(size_t length): _length(length) {}
 
-    double operator[](size_t position) {
+    float operator[](size_t position) const {
         if (position < _length) return 1;
         return 0;
     }

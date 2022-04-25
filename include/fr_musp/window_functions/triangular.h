@@ -11,18 +11,18 @@ class Triangular {
 public:
     explicit Triangular(size_t length):
         _length(length),
-        _halfLength((double) _length / 2.0),
-        _halfLengthPlusOne((double) (_length + 1) / 2.0) {}
+        _halfLength((float) _length / 2.0f),
+        _halfLengthPlusOne((float) (_length + 1) / 2.0f) {}
 
-    double operator[](size_t position) {
-        if (position < _length) return 1 - abs(((double) position - _halfLength) / _halfLengthPlusOne);
+    float operator[](size_t position) const {
+        if (position < _length) return 1.0f - abs(((float) position - _halfLength) / _halfLengthPlusOne);
         return 0;
     }
 
 private:
     size_t _length;
-    double _halfLength;
-    double _halfLengthPlusOne;
+    float _halfLength;
+    float _halfLengthPlusOne;
 };
 
 } // namespace windows
