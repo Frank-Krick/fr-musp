@@ -5,6 +5,7 @@ add_library(fr_musp
   white_noise/white_noise.cpp
   ../include/fr_musp/binary_sequence/binary_sequence.h
   binary_sequence/binary_sequence.cpp
+  ../include/fr_musp/granular/grain_builder.h
   ../include/fr_musp/granular/grain.h
   granular/grain.cpp
   ../include/fr_musp/window_functions/rectangular.h

@@ -4,7 +4,8 @@ add_executable(fr_musp_tests
   binary_sequence/binary_sequence_tests.cpp
   window_functions/rectangle_tests.cpp
   window_functions/triangular_tests.cpp
-  granular/grain_tests.cpp)
+  granular/grain_tests.cpp
+  granular/grain_builder_tests.cpp)
 
 target_link_libraries(fr_musp_tests
   PRIVATE Catch2::Catch2WithMain
