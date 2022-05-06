@@ -9,7 +9,17 @@ add_library(fr_musp
   ../include/fr_musp/granular/grain.h
   granular/grain.cpp
   ../include/fr_musp/window_functions/rectangular.h
-  ../include/fr_musp/window_functions/triangular.h)
+  ../include/fr_musp/window_functions/triangular.h
+  ../include/fr_musp/envelope/ienvelope.h
+  ../include/fr_musp/envelope/exponential_fall.h
+  ../include/fr_musp/envelope/exponential_rise.h
+  ../include/fr_musp/envelope/inverted_ramp.h
+  ../include/fr_musp/envelope/logarithmic_fall.h
+  ../include/fr_musp/envelope/logarithmic_rise.h
+  ../include/fr_musp/envelope/pulse.h
+  ../include/fr_musp/envelope/ramp.h
+  ../include/fr_musp/envelope/triangle.h
+  ../include/fr_musp/envelope/envelope_segment.h)
 
 target_include_directories(fr_musp PUBLIC ../include)
 
