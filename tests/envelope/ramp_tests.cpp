@@ -30,6 +30,14 @@ TEST_CASE("The ramp") {
             accum += 1.0f / 40000.0f;
         }
     }
+
+    SECTION("Should be iterable") {
+        float accum = 0.0f;
+        for (auto value : ramp) {
+            REQUIRE(value == Approx(accum).epsilon(0.001));
+            accum += 1.0f / 40000.0f;
+        }
+    }
 }
 
 #endif // FR_MUSP_RAMP_TESTS_CPP
