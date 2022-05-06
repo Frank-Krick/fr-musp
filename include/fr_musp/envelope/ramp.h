@@ -19,7 +19,7 @@ class Ramp {
             return 0.0f;
         if (position == _endIndex)
             return 1.0f;
-        return (float)position * _sampleLength;
+        return (float)position * _slope;
     }
 
   private:
