@@ -56,15 +56,13 @@ template <class Ramp> class RampIterator {
 
   private:
     Ramp *_rampPtr;
-    unsigned int _position;
-    float _value;
-    float _slope;
+    unsigned int _position{};
+    float _value{};
+    float _slope{};
 };
 
 class Ramp {
   public:
-    friend class RampIterator<Ramp>;
-
     Ramp(const std::chrono::duration<float> duration,
          const unsigned int sampleRate)
         : _sampleRate(sampleRate), _duration(duration),

@@ -6,7 +6,8 @@ add_executable(fr_musp_tests
   window_functions/triangular_tests.cpp
   granular/grain_tests.cpp
   granular/grain_builder_tests.cpp
-  envelope/ramp_tests.cpp)
+  envelope/ramp_tests.cpp
+  envelope/inverted_ramp_tests.cpp)
 
 target_link_libraries(fr_musp_tests
   PRIVATE Catch2::Catch2WithMain

@@ -1,6 +1,3 @@
-#ifndef FR_MUSP_RAMP_TESTS_CPP
-#define FR_MUSP_RAMP_TESTS_CPP
-
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_approx.hpp>
 
@@ -26,7 +23,7 @@ TEST_CASE("The ramp") {
     SECTION("Should increase by the slope") {
         float accum = 0.0f;
         for (size_t i = 0; i < 40000; i++) {
-            REQUIRE(ramp[i] == Approx(accum).epsilon(0.001));
+            REQUIRE(ramp[i] == Approx(accum).margin(0.001));
             accum += 1.0f / 40000.0f;
         }
     }
@@ -34,10 +31,8 @@ TEST_CASE("The ramp") {
     SECTION("Should be iterable") {
         float accum = 0.0f;
         for (auto value : ramp) {
-            REQUIRE(value == Approx(accum).epsilon(0.001));
+            REQUIRE(value == Approx(accum).margin(0.001));
             accum += 1.0f / 40000.0f;
         }
     }
 }
-
-#endif // FR_MUSP_RAMP_TESTS_CPP
