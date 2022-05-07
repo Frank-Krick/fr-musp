@@ -10,7 +10,6 @@ add_library(fr_musp
   granular/grain.cpp
   ../include/fr_musp/window_functions/rectangular.h
   ../include/fr_musp/window_functions/triangular.h
-  ../include/fr_musp/envelope/ienvelope.h
   ../include/fr_musp/envelope/exponential_fall.h
   ../include/fr_musp/envelope/exponential_rise.h
   ../include/fr_musp/envelope/inverted_ramp.h
