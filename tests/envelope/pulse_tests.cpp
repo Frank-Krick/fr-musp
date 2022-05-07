@@ -29,4 +29,17 @@ TEST_CASE("The pulse envelope") {
             }
         }
     }
+
+    SECTION("Should be iterable") {
+        auto switchSample = (unsigned int)floor((float)sampleRate * dutyCycle);
+        unsigned int current(0);
+        for (auto value : pulse) {
+            if (current < switchSample) {
+                REQUIRE(value == 1.0f);
+            } else {
+                REQUIRE(value == 0.0f);
+            }
+            ++current;
+        }
+    }
 }

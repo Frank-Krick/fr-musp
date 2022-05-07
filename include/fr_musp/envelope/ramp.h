@@ -13,11 +13,11 @@ template <class Ramp> class RampIterator {
     typedef const float *pointer;
     typedef std::bidirectional_iterator_tag iterator_category;
 
-    explicit RampIterator(Ramp *rampPtr, const float slope)
+    RampIterator(Ramp *rampPtr, const float slope)
         : _rampPtr(rampPtr), _position(0), _value(0), _slope(slope) {}
 
-    explicit RampIterator(Ramp *rampPtr, const float slope,
-                          unsigned int position, float value)
+    RampIterator(Ramp *rampPtr, const float slope, unsigned int position,
+                 float value)
         : _rampPtr(rampPtr), _position(position), _value(value), _slope(slope) {
     }
 
@@ -78,11 +78,9 @@ class Ramp {
         return (float)position * _slope;
     }
 
-    RampIterator<Ramp> begin() { return RampIterator<Ramp>(this, _slope); }
+    RampIterator<Ramp> begin() { return {this, _slope}; }
 
-    RampIterator<Ramp> end() {
-        return RampIterator<Ramp>(this, _slope, _endIndex + 1, 1.0f);
-    }
+    RampIterator<Ramp> end() { return {this, _slope, _endIndex + 1, 1.0f}; }
 
   private:
     std::chrono::duration<float> _duration;
