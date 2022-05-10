@@ -1,10 +1,34 @@
 #ifndef FR_MUSP_LOGARITHMIC_RISE_H
 #define FR_MUSP_LOGARITHMIC_RISE_H
 
+#include <fr_musp/envelope/exponential_fall.h>
+
 namespace fr_musp::envelope {
 
-class LogarithmicRise {};
+class LogarithmicRise {
+  public:
+    LogarithmicRise(const std::chrono::duration<float> duration,
+                    const float curvature, const unsigned int sampleRate)
+        : _sampleLength(floor(duration.count() * (float)sampleRate)),
+          _endIndex((unsigned int)_sampleLength - 1),
+          _exponentialFall(duration, curvature, sampleRate){};
+
+    float operator[](const unsigned int position) const {
+        return 1.0f - _exponentialFall[position];
+    };
+
+    OperatorBasedIterator<LogarithmicRise> begin() { return {this}; }
+
+    OperatorBasedIterator<LogarithmicRise> end() {
+        return {this, _endIndex + 1};
+    }
+
+  private:
+    ExponentialFall _exponentialFall;
+    float _sampleLength;
+    unsigned int _endIndex;
+};
 
 } // namespace fr_musp::envelope
 
-#endif //FR_MUSP_LOGARITHMIC_RISE_H
+#endif // FR_MUSP_LOGARITHMIC_RISE_H
