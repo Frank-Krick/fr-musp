@@ -1,56 +1,10 @@
 #ifndef FR_MUSP_PULSE_H
 #define FR_MUSP_PULSE_H
 
+#include <fr_musp/envelope/operator_based_iterator.h>
 #include <chrono>
 
 namespace fr_musp::envelope {
-
-template <class Pulse> class PulseIterator {
-  public:
-    typedef ptrdiff_t difference_type;
-    typedef float value_type;
-    typedef const float &reference;
-    typedef const float *pointer;
-    typedef std::bidirectional_iterator_tag iterator_category;
-
-    PulseIterator(Pulse *pulsePrt) : _pulsePtr(pulsePrt) {}
-
-    PulseIterator(Pulse *pulsePrt, unsigned int position)
-        : _pulsePtr(pulsePrt), _position(position) {}
-
-    PulseIterator(const PulseIterator &) = default;
-
-    PulseIterator() = default;
-
-    ~PulseIterator() = default;
-
-    PulseIterator<Pulse> &operator=(const PulseIterator &) = default;
-
-    PulseIterator<Pulse> &operator++() {
-        ++_position;
-        return *this;
-    }
-
-    PulseIterator<Pulse> operator++(int) { // NOLINT(cert-dcl21-cpp)
-        PulseIterator<Pulse> iterator(_pulsePtr, _position);
-        ++_position;
-        return iterator;
-    }
-
-    value_type operator*() const { return (*_pulsePtr)[_position]; };
-
-    value_type operator->() const { return (*_pulsePtr)[_position]; };
-
-    friend bool operator==(const PulseIterator &left,
-                           const PulseIterator &right) = default;
-
-    friend bool operator!=(const PulseIterator &left,
-                           const PulseIterator &right) = default;
-
-  private:
-    Pulse *_pulsePtr;
-    unsigned int _position{};
-};
 
 class Pulse {
   public:
@@ -68,13 +22,9 @@ class Pulse {
             return 0.0f;
     }
 
-    PulseIterator<Pulse> begin() {
-        return {this};
-    }
+    OperatorBasedIterator<Pulse> begin() { return {this}; }
 
-    PulseIterator<Pulse> end() {
-        return {this, _endIndex + 1};
-    }
+    OperatorBasedIterator<Pulse> end() { return {this, _endIndex + 1}; }
 
   private:
     std::chrono::duration<float> _duration;

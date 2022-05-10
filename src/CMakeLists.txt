@@ -18,7 +18,8 @@ add_library(fr_musp
   ../include/fr_musp/envelope/pulse.h
   ../include/fr_musp/envelope/ramp.h
   ../include/fr_musp/envelope/triangle.h
-  ../include/fr_musp/envelope/envelope_segment.h)
+  ../include/fr_musp/envelope/envelope_segment.h
+  ../include/fr_musp/envelope/operator_based_iterator.h)
 
 target_include_directories(fr_musp PUBLIC ../include)
 

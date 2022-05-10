@@ -8,7 +8,9 @@ add_executable(fr_musp_tests
   granular/grain_builder_tests.cpp
   envelope/ramp_tests.cpp
   envelope/inverted_ramp_tests.cpp
-  envelope/pulse_tests.cpp)
+  envelope/pulse_tests.cpp
+  envelope/exponential_rise_tests.cpp
+  envelope/operator_based_iterator_tests.cpp)
 
 target_link_libraries(fr_musp_tests
   PRIVATE Catch2::Catch2WithMain
