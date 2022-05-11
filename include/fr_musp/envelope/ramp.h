@@ -84,6 +84,8 @@ class Ramp {
 
     iterator end() { return {this, _slope, _endIndex + 1, 1.0f}; }
 
+    unsigned int size() { return _endIndex + 1; };
+
   private:
     std::chrono::duration<float> _duration;
     unsigned int _sampleRate;

@@ -22,72 +22,6 @@ typedef std::variant<ExponentialFall, ExponentialRise, InvertedRamp,
                      InvertedTriangle, Constant>
     EnvelopeGeneratorVariant;
 
-typedef std::variant<ExponentialFall::iterator, ExponentialRise::iterator,
-                     InvertedRamp::iterator, LogarithmicFall::iterator,
-                     LogarithmicRise::iterator, Pulse::iterator, Ramp::iterator,
-                     Triangle::iterator, InvertedTriangle::iterator,
-                     Constant::iterator>
-    EnvelopeGeneratorIteratorVariant;
-
-template <class EnvelopeSegment> class EnvelopeSegmentIterator {
-  public:
-    typedef ptrdiff_t difference_type;
-    typedef float value_type;
-    typedef const float &reference;
-    typedef const float *pointer;
-    typedef std::forward_iterator_tag iterator_category;
-
-    EnvelopeSegmentIterator(EnvelopeGeneratorIteratorVariant &&iterator)
-        : _iteratorVariant(iterator) {}
-
-    ~EnvelopeSegmentIterator() = default;
-
-    EnvelopeSegmentIterator &
-    operator=(const EnvelopeSegmentIterator &) = default;
-
-    EnvelopeSegmentIterator &operator++() {
-        incrementIteratorVariant();
-        return *this;
-    }
-
-    EnvelopeSegmentIterator operator++(int) { // NOLINT(cert-dcl21-cpp)
-        EnvelopeSegmentIterator iterator(_iteratorVariant);
-        incrementIteratorVariant();
-        return iterator;
-    }
-
-    value_type operator*() const { return dereference(); };
-
-    value_type operator->() const { return dereference(); };
-
-    friend bool operator==(const EnvelopeSegmentIterator &left,
-                           const EnvelopeSegmentIterator &right) = default;
-
-    friend bool operator!=(const EnvelopeSegmentIterator &left,
-                           const EnvelopeSegmentIterator &right) = default;
-
-  private:
-    EnvelopeGeneratorIteratorVariant _iteratorVariant;
-
-    void incrementIteratorVariant() {
-        if (std::holds_alternative<Constant::iterator>(_iteratorVariant)) {
-            ++std::get<Constant::iterator>(_iteratorVariant);
-        } else if (std::holds_alternative<ExponentialFall::iterator>(
-                       _iteratorVariant)) {
-            ++std::get<ExponentialFall::iterator>(_iteratorVariant);
-        }
-    }
-
-    [[nodiscard]] value_type dereference() const {
-        if (std::holds_alternative<Constant::iterator>(_iteratorVariant)) {
-            return *std::get<Constant::iterator>(_iteratorVariant);
-        } else if (std::holds_alternative<ExponentialFall::iterator>(
-                       _iteratorVariant)) {
-            return *std::get<ExponentialFall::iterator>(_iteratorVariant);
-        }
-    }
-};
-
 class EnvelopeSegment {
   public:
     explicit EnvelopeSegment(EnvelopeGeneratorVariant &&envelope, float scale,
@@ -100,29 +34,30 @@ class EnvelopeSegment {
         } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
             return std::get<ExponentialFall>(_envelope)[position] * _scale +
                    _offset;
+        } else if (std::holds_alternative<ExponentialRise>(_envelope)) {
+            return std::get<ExponentialRise>(_envelope)[position] * _scale +
+                   _offset;
         }
     };
 
-    EnvelopeSegmentIterator<EnvelopeSegment> begin() {
-        if (std::holds_alternative<Constant>(_envelope)) {
-            return {std::get<Constant>(_envelope).begin()};
-        } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
-            return {std::get<ExponentialFall>(_envelope).begin()};
-        }
-    }
+    OperatorBasedIterator<EnvelopeSegment> begin() { return {this}; }
 
-    EnvelopeSegmentIterator<EnvelopeSegment> end() {
-        if (std::holds_alternative<Constant>(_envelope)) {
-            return {std::get<Constant>(_envelope).end()};
-        } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
-            return {std::get<ExponentialFall>(_envelope).end()};
-        }
-    }
+    OperatorBasedIterator<EnvelopeSegment> end() { return {this, size()}; }
 
   private:
     EnvelopeGeneratorVariant _envelope;
     float _scale;
     float _offset;
+
+    unsigned int size() {
+        if (std::holds_alternative<Constant>(_envelope)) {
+            return std::get<Constant>(_envelope).size();
+        } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
+            return std::get<ExponentialFall>(_envelope).size();
+        } else if (std::holds_alternative<ExponentialRise>(_envelope)) {
+            return std::get<ExponentialRise>(_envelope).size();
+        }
+    }
 };
 
 } // namespace fr_musp::envelope
