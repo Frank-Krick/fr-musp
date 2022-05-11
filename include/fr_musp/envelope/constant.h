@@ -7,6 +7,8 @@ namespace fr_musp::envelope {
 
 class Constant {
   public:
+    typedef OperatorBasedIterator<Constant> iterator;
+
     Constant(const std::chrono::duration<float> duration,
              const unsigned int sampleRate)
         : _sampleLength(
@@ -15,9 +17,9 @@ class Constant {
 
     float operator[](const unsigned int position) const { return 1.0f; }
 
-    OperatorBasedIterator<Constant> begin() { return {this}; }
+    iterator begin() { return {this}; }
 
-    OperatorBasedIterator<Constant> end() { return {this, _endIndex + 1}; }
+    iterator end() { return {this, _endIndex + 1}; }
 
   private:
     unsigned int _sampleLength;

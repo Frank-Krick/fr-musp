@@ -7,6 +7,8 @@ namespace fr_musp::envelope {
 
 class LogarithmicFall {
   public:
+    typedef OperatorBasedIterator<LogarithmicFall> iterator;
+
     LogarithmicFall(const std::chrono::duration<float> duration,
                     const float curvature, const unsigned int sampleRate)
         : _sampleLength(floor(duration.count() * (float)sampleRate)),
@@ -17,11 +19,9 @@ class LogarithmicFall {
         return 1.0f - _exponentialFall[position];
     };
 
-    OperatorBasedIterator<LogarithmicFall> begin() { return {this}; }
+    iterator begin() { return {this}; }
 
-    OperatorBasedIterator<LogarithmicFall> end() {
-        return {this, _endIndex + 1};
-    }
+    iterator end() { return {this, _endIndex + 1}; }
 
   private:
     ExponentialRise _exponentialFall;

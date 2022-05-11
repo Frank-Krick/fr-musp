@@ -8,6 +8,8 @@ namespace fr_musp::envelope {
 
 class Pulse {
   public:
+    typedef OperatorBasedIterator<Pulse> iterator;
+
     Pulse(const std::chrono::duration<float> duration, float dutyCycle,
           const unsigned int sampleRate)
         : _duration(duration), _dutyCycle(dutyCycle), _sampleRate(sampleRate),
@@ -22,9 +24,9 @@ class Pulse {
             return 0.0f;
     }
 
-    OperatorBasedIterator<Pulse> begin() { return {this}; }
+    iterator begin() { return {this}; }
 
-    OperatorBasedIterator<Pulse> end() { return {this, _endIndex + 1}; }
+    iterator end() { return {this, _endIndex + 1}; }
 
   private:
     std::chrono::duration<float> _duration;

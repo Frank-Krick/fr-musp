@@ -6,7 +6,7 @@ using namespace fr_musp::envelope;
 using namespace std::chrono;
 using namespace Catch;
 
-TEST_CASE("The envelope segment") {
+TEST_CASE("The envelope segment containing a constant") {
     milliseconds length(1000);
     unsigned int sampleRate(40000);
     Constant constant(length, sampleRate);
@@ -34,6 +34,17 @@ TEST_CASE("The envelope segment") {
         EnvelopeSegment envelopeSegment(constant, scale, offset);
         for (int i = 0; i < sampleRate; i++) {
             REQUIRE(envelopeSegment[i] == 4.5f);
+        }
+    }
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(constant, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(constant[index] == value);
+            index++;
         }
     }
 }

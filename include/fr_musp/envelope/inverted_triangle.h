@@ -7,6 +7,7 @@ namespace fr_musp::envelope {
 
 class InvertedTriangle {
   public:
+    typedef OperatorBasedIterator<InvertedTriangle> iterator;
     InvertedTriangle(const std::chrono::duration<float> length,
                      const unsigned int sampleRate)
         : _triangle(length, sampleRate) {}
@@ -15,11 +16,9 @@ class InvertedTriangle {
         return 1.0f - _triangle[position];
     };
 
-    OperatorBasedIterator<InvertedTriangle> begin() { return {this}; }
+    iterator begin() { return {this}; }
 
-    OperatorBasedIterator<InvertedTriangle> end() {
-        return {this, _triangle.size()};
-    }
+    iterator end() { return {this, _triangle.size()}; }
 
   private:
     Triangle _triangle;

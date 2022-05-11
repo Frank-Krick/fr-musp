@@ -63,6 +63,8 @@ template <class Ramp> class RampIterator {
 
 class Ramp {
   public:
+    typedef RampIterator<Ramp> iterator;
+
     Ramp(const std::chrono::duration<float> duration,
          const unsigned int sampleRate)
         : _sampleRate(sampleRate), _duration(duration),
@@ -78,9 +80,9 @@ class Ramp {
         return (float)position * _slope;
     }
 
-    RampIterator<Ramp> begin() { return {this, _slope}; }
+    iterator begin() { return {this, _slope}; }
 
-    RampIterator<Ramp> end() { return {this, _slope, _endIndex + 1, 1.0f}; }
+    iterator end() { return {this, _slope, _endIndex + 1, 1.0f}; }
 
   private:
     std::chrono::duration<float> _duration;

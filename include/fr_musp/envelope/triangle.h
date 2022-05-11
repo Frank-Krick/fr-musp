@@ -9,6 +9,8 @@ namespace fr_musp::envelope {
 
 class Triangle {
   public:
+    typedef OperatorBasedIterator<Triangle> iterator;
+
     Triangle(const std::chrono::duration<float> length,
              const unsigned int sampleRate)
         : _ramp(length / 2, sampleRate), _invertedRamp(length / 2, sampleRate),
@@ -24,9 +26,9 @@ class Triangle {
         }
     };
 
-    OperatorBasedIterator<Triangle> begin() { return {this}; }
+    iterator begin() { return {this}; }
 
-    OperatorBasedIterator<Triangle> end() { return {this, _endIndex + 1}; }
+    iterator end() { return {this, _endIndex + 1}; }
 
     unsigned int size() { return _endIndex + 1; }
 

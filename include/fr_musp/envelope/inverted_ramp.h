@@ -51,6 +51,8 @@ template <class Ramp, class InvertedRamp> class InvertedRampIterator {
 
 class InvertedRamp {
   public:
+    typedef InvertedRampIterator<Ramp, InvertedRamp> iterator;
+
     InvertedRamp(const std::chrono::duration<float> duration,
                  const unsigned int sampleRate)
         : _ramp(duration, sampleRate) {}
@@ -59,11 +61,11 @@ class InvertedRamp {
         return 1.0f - _ramp[position];
     }
 
-    InvertedRampIterator<Ramp, InvertedRamp> begin() {
+    iterator begin() {
         return InvertedRampIterator<Ramp, InvertedRamp>(_ramp.begin());
     }
 
-    InvertedRampIterator<Ramp, InvertedRamp> end() {
+    iterator end() {
         return InvertedRampIterator<Ramp, InvertedRamp>(_ramp.end());
     }
 

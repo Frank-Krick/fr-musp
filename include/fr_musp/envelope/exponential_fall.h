@@ -7,6 +7,8 @@ namespace fr_musp::envelope {
 
 class ExponentialFall {
   public:
+    typedef OperatorBasedIterator<ExponentialFall> iterator;
+
     ExponentialFall(const std::chrono::duration<float> duration,
                     const float curvature, const unsigned int sampleRate)
         : _sampleLength(floor(duration.count() * (float)sampleRate)),
@@ -21,11 +23,9 @@ class ExponentialFall {
         return _exponentialRise[_endIndex - position];
     }
 
-    OperatorBasedIterator<ExponentialFall> begin() { return {this}; }
+    iterator begin() { return {this}; }
 
-    OperatorBasedIterator<ExponentialFall> end() {
-        return {this, _endIndex + 1};
-    }
+    iterator end() { return {this, _endIndex + 1}; }
 
   private:
     ExponentialRise _exponentialRise;

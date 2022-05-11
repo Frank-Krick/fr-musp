@@ -20,11 +20,63 @@ namespace fr_musp::envelope {
 typedef std::variant<ExponentialFall, ExponentialRise, InvertedRamp,
                      LogarithmicFall, LogarithmicRise, Pulse, Ramp, Triangle,
                      InvertedTriangle, Constant>
-    EnvelopeGenerator;
+    EnvelopeGeneratorVariant;
+
+typedef std::variant<ExponentialFall::iterator, ExponentialRise::iterator,
+                     InvertedRamp::iterator, LogarithmicFall::iterator,
+                     LogarithmicRise::iterator, Pulse::iterator, Ramp::iterator,
+                     Triangle::iterator, InvertedTriangle::iterator,
+                     Constant::iterator>
+    EnvelopeGeneratorIteratorVariant;
+
+template <class EnvelopeSegment> class EnvelopeSegmentIterator {
+  public:
+    typedef ptrdiff_t difference_type;
+    typedef float value_type;
+    typedef const float &reference;
+    typedef const float *pointer;
+    typedef std::forward_iterator_tag iterator_category;
+
+    EnvelopeSegmentIterator(EnvelopeGeneratorIteratorVariant &&iterator)
+        : _iteratorVariant(iterator) {}
+
+    ~EnvelopeSegmentIterator() = default;
+
+    EnvelopeSegmentIterator &
+    operator=(const EnvelopeSegmentIterator &) = default;
+
+    EnvelopeSegmentIterator &operator++() {
+        ++std::get<Constant::iterator>(_iteratorVariant);
+        return *this;
+    }
+
+    EnvelopeSegmentIterator operator++(int) {
+        EnvelopeSegmentIterator iterator(_iteratorVariant);
+        ++std::get<Constant::iterator>(_iteratorVariant);
+        return iterator;
+    }
+
+    value_type operator*() const {
+        return *std::get<Constant::iterator>(_iteratorVariant);
+    };
+
+    value_type operator->() const {
+        return *std::get<Constant::iterator>(_iteratorVariant);
+    };
+
+    friend bool operator==(const EnvelopeSegmentIterator &left,
+                           const EnvelopeSegmentIterator &right) = default;
+
+    friend bool operator!=(const EnvelopeSegmentIterator &left,
+                           const EnvelopeSegmentIterator &right) = default;
+
+  private:
+    EnvelopeGeneratorIteratorVariant _iteratorVariant;
+};
 
 class EnvelopeSegment {
   public:
-    explicit EnvelopeSegment(EnvelopeGenerator &&envelope, float scale,
+    explicit EnvelopeSegment(EnvelopeGeneratorVariant &&envelope, float scale,
                              float offset)
         : _envelope(envelope), _scale(scale), _offset(offset) {}
 
@@ -32,8 +84,16 @@ class EnvelopeSegment {
         return std::get<Constant>(_envelope)[position] * _scale + _offset;
     };
 
+    EnvelopeSegmentIterator<EnvelopeSegment> begin() {
+        return {std::get<Constant>(_envelope).begin()};
+    }
+
+    EnvelopeSegmentIterator<EnvelopeSegment> end() {
+        return {std::get<Constant>(_envelope).end()};
+    }
+
   private:
-    EnvelopeGenerator _envelope;
+    EnvelopeGeneratorVariant _envelope;
     float _scale;
     float _offset;
 };
