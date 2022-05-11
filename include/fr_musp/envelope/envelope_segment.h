@@ -40,6 +40,21 @@ class EnvelopeSegment {
         } else if (std::holds_alternative<InvertedRamp>(_envelope)) {
             return std::get<InvertedRamp>(_envelope)[position] * _scale +
                    _offset;
+        } else if (std::holds_alternative<LogarithmicFall>(_envelope)) {
+            return std::get<LogarithmicFall>(_envelope)[position] * _scale +
+                   _offset;
+        } else if (std::holds_alternative<LogarithmicRise>(_envelope)) {
+            return std::get<LogarithmicRise>(_envelope)[position] * _scale +
+                   _offset;
+        } else if (std::holds_alternative<Pulse>(_envelope)) {
+            return std::get<Pulse>(_envelope)[position] * _scale + _offset;
+        } else if (std::holds_alternative<Ramp>(_envelope)) {
+            return std::get<Ramp>(_envelope)[position] * _scale + _offset;
+        } else if (std::holds_alternative<Triangle>(_envelope)) {
+            return std::get<Triangle>(_envelope)[position] * _scale + _offset;
+        } else if (std::holds_alternative<InvertedTriangle>(_envelope)) {
+            return std::get<InvertedTriangle>(_envelope)[position] * _scale +
+                   _offset;
         } else {
             throw std::exception("Unknown envelope type");
         }
@@ -63,6 +78,18 @@ class EnvelopeSegment {
             return std::get<ExponentialRise>(_envelope).size();
         } else if (std::holds_alternative<InvertedRamp>(_envelope)) {
             return std::get<InvertedRamp>(_envelope).size();
+        } else if (std::holds_alternative<LogarithmicFall>(_envelope)) {
+            return std::get<LogarithmicFall>(_envelope).size();
+        } else if (std::holds_alternative<LogarithmicRise>(_envelope)) {
+            return std::get<LogarithmicRise>(_envelope).size();
+        } else if (std::holds_alternative<Pulse>(_envelope)) {
+            return std::get<Pulse>(_envelope).size();
+        } else if (std::holds_alternative<Ramp>(_envelope)) {
+            return std::get<Ramp>(_envelope).size();
+        } else if (std::holds_alternative<Triangle>(_envelope)) {
+            return std::get<Triangle>(_envelope).size();
+        } else if (std::holds_alternative<InvertedTriangle>(_envelope)) {
+            return std::get<InvertedTriangle>(_envelope).size();
         } else {
             throw std::exception("Unknown envelope type");
         }

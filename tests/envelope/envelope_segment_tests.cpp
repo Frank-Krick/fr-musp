@@ -122,3 +122,107 @@ TEST_CASE("The envelope segment containing the inverted ramp") {
         }
     }
 }
+TEST_CASE("The envelope segment containing the logarithmic fall") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    float curvature(2.0f);
+    LogarithmicFall logarithmicFall(length, curvature, sampleRate);
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(logarithmicFall, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(logarithmicFall[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
+
+TEST_CASE("The envelope segment containing the logarithmic rise") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    float curvature(2.0f);
+    LogarithmicRise logarithmicRise(length, curvature, sampleRate);
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(logarithmicRise, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(logarithmicRise[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
+
+TEST_CASE("The envelope segment containing the pulse") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    float curvature(2.0f);
+    Pulse pulse(length, curvature, sampleRate);
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(pulse, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(pulse[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
+
+TEST_CASE("The envelope segment containing the ramp") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    Ramp ramp(length, sampleRate);
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(ramp, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(ramp[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
+
+TEST_CASE("The envelope segment containing the triangle") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    Triangle triangle(length, sampleRate);
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(triangle, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(triangle[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
+
+TEST_CASE("The envelope segment containing the inverted triangle") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    InvertedTriangle invertedTriangle(length, sampleRate);
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(invertedTriangle, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(invertedTriangle[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
