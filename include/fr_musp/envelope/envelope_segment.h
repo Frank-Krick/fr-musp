@@ -37,6 +37,11 @@ class EnvelopeSegment {
         } else if (std::holds_alternative<ExponentialRise>(_envelope)) {
             return std::get<ExponentialRise>(_envelope)[position] * _scale +
                    _offset;
+        } else if (std::holds_alternative<InvertedRamp>(_envelope)) {
+            return std::get<InvertedRamp>(_envelope)[position] * _scale +
+                   _offset;
+        } else {
+            throw std::exception("Unknown envelope type");
         }
     };
 
@@ -56,6 +61,10 @@ class EnvelopeSegment {
             return std::get<ExponentialFall>(_envelope).size();
         } else if (std::holds_alternative<ExponentialRise>(_envelope)) {
             return std::get<ExponentialRise>(_envelope).size();
+        } else if (std::holds_alternative<InvertedRamp>(_envelope)) {
+            return std::get<InvertedRamp>(_envelope).size();
+        } else {
+            throw std::exception("Unknown envelope type");
         }
     }
 };

@@ -98,3 +98,27 @@ TEST_CASE("The envelope segment containing the exponential rise") {
         }
     }
 }
+
+TEST_CASE("The envelope segment containing the inverted ramp") {
+    milliseconds length(1000);
+    unsigned int sampleRate(40000);
+    InvertedRamp invertedRamp(length, sampleRate);
+
+    SECTION("Should scale and offset the envelope") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(invertedRamp, scale, offset);
+        REQUIRE(envelopeSegment[39999] == 0.5f);
+    }
+
+    SECTION("Should be iterable") {
+        float offset(0.5f);
+        float scale(4.0f);
+        EnvelopeSegment envelopeSegment(invertedRamp, scale, offset);
+        unsigned int index{};
+        for (auto value : envelopeSegment) {
+            REQUIRE(invertedRamp[index] * scale + offset == value);
+            index++;
+        }
+    }
+}
