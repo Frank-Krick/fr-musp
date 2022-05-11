@@ -1,9 +1,11 @@
 #ifndef FR_MUSP_ENVELOPE_SEGMENT_H
 #define FR_MUSP_ENVELOPE_SEGMENT_H
 
+#include <fr_musp/envelope/constant.h>
 #include <fr_musp/envelope/exponential_fall.h>
 #include <fr_musp/envelope/exponential_rise.h>
 #include <fr_musp/envelope/inverted_ramp.h>
+#include <fr_musp/envelope/inverted_triangle.h>
 #include <fr_musp/envelope/logarithmic_fall.h>
 #include <fr_musp/envelope/logarithmic_rise.h>
 #include <fr_musp/envelope/pulse.h>
@@ -16,14 +18,24 @@
 namespace fr_musp::envelope {
 
 typedef std::variant<ExponentialFall, ExponentialRise, InvertedRamp,
-                     LogrithmicFall, LogarithmicRise, Pulse, Ramp, Triangle>
+                     LogarithmicFall, LogarithmicRise, Pulse, Ramp, Triangle,
+                     InvertedTriangle, Constant>
     EnvelopeGenerator;
 
 class EnvelopeSegment {
   public:
+    explicit EnvelopeSegment(EnvelopeGenerator &&envelope, float scale,
+                             float offset)
+        : _envelope(envelope), _scale(scale), _offset(offset) {}
+
+    float operator[](const unsigned int position) const {
+        return std::get<Constant>(_envelope)[position] * _scale + _offset;
+    };
 
   private:
-    EnvelopeGenerator _generator;
+    EnvelopeGenerator _envelope;
+    float _scale;
+    float _offset;
 };
 
 } // namespace fr_musp::envelope
