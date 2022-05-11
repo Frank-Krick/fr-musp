@@ -46,23 +46,19 @@ template <class EnvelopeSegment> class EnvelopeSegmentIterator {
     operator=(const EnvelopeSegmentIterator &) = default;
 
     EnvelopeSegmentIterator &operator++() {
-        ++std::get<Constant::iterator>(_iteratorVariant);
+        incrementIteratorVariant();
         return *this;
     }
 
-    EnvelopeSegmentIterator operator++(int) {
+    EnvelopeSegmentIterator operator++(int) { // NOLINT(cert-dcl21-cpp)
         EnvelopeSegmentIterator iterator(_iteratorVariant);
-        ++std::get<Constant::iterator>(_iteratorVariant);
+        incrementIteratorVariant();
         return iterator;
     }
 
-    value_type operator*() const {
-        return *std::get<Constant::iterator>(_iteratorVariant);
-    };
+    value_type operator*() const { return dereference(); };
 
-    value_type operator->() const {
-        return *std::get<Constant::iterator>(_iteratorVariant);
-    };
+    value_type operator->() const { return dereference(); };
 
     friend bool operator==(const EnvelopeSegmentIterator &left,
                            const EnvelopeSegmentIterator &right) = default;
@@ -72,6 +68,24 @@ template <class EnvelopeSegment> class EnvelopeSegmentIterator {
 
   private:
     EnvelopeGeneratorIteratorVariant _iteratorVariant;
+
+    void incrementIteratorVariant() {
+        if (std::holds_alternative<Constant::iterator>(_iteratorVariant)) {
+            ++std::get<Constant::iterator>(_iteratorVariant);
+        } else if (std::holds_alternative<ExponentialFall::iterator>(
+                       _iteratorVariant)) {
+            ++std::get<ExponentialFall::iterator>(_iteratorVariant);
+        }
+    }
+
+    [[nodiscard]] value_type dereference() const {
+        if (std::holds_alternative<Constant::iterator>(_iteratorVariant)) {
+            return *std::get<Constant::iterator>(_iteratorVariant);
+        } else if (std::holds_alternative<ExponentialFall::iterator>(
+                       _iteratorVariant)) {
+            return *std::get<ExponentialFall::iterator>(_iteratorVariant);
+        }
+    }
 };
 
 class EnvelopeSegment {
@@ -81,15 +95,28 @@ class EnvelopeSegment {
         : _envelope(envelope), _scale(scale), _offset(offset) {}
 
     float operator[](const unsigned int position) const {
-        return std::get<Constant>(_envelope)[position] * _scale + _offset;
+        if (std::holds_alternative<Constant>(_envelope)) {
+            return std::get<Constant>(_envelope)[position] * _scale + _offset;
+        } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
+            return std::get<ExponentialFall>(_envelope)[position] * _scale +
+                   _offset;
+        }
     };
 
     EnvelopeSegmentIterator<EnvelopeSegment> begin() {
-        return {std::get<Constant>(_envelope).begin()};
+        if (std::holds_alternative<Constant>(_envelope)) {
+            return {std::get<Constant>(_envelope).begin()};
+        } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
+            return {std::get<ExponentialFall>(_envelope).begin()};
+        }
     }
 
     EnvelopeSegmentIterator<EnvelopeSegment> end() {
-        return {std::get<Constant>(_envelope).end()};
+        if (std::holds_alternative<Constant>(_envelope)) {
+            return {std::get<Constant>(_envelope).end()};
+        } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
+            return {std::get<ExponentialFall>(_envelope).end()};
+        }
     }
 
   private:
