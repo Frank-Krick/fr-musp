@@ -28,6 +28,8 @@ class Triangle {
 
     OperatorBasedIterator<Triangle> end() { return {this, _endIndex + 1}; }
 
+    unsigned int size() { return _endIndex + 1; }
+
   private:
     Ramp _ramp;
     InvertedRamp _invertedRamp;
