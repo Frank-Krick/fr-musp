@@ -17,7 +17,8 @@ add_executable(fr_musp_tests
   envelope/logarithmic_fall_tests.cpp
   envelope/triangle_tests.cpp
   envelope/inverted_triangle_tests.cpp
-  envelope/envelope_segment_tests.cpp)
+  envelope/envelope_segment_tests.cpp
+  envelope/envelope_chain_tests.cpp)
 
 target_link_libraries(fr_musp_tests
   PRIVATE Catch2::Catch2WithMain

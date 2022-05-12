@@ -20,7 +20,7 @@ class InvertedTriangle {
 
     iterator end() { return {this, _triangle.size()}; }
 
-    unsigned int size() { return _triangle.size(); };
+    unsigned int size() const { return _triangle.size(); };
 
   private:
     Triangle _triangle;

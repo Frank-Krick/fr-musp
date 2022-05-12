@@ -69,7 +69,7 @@ class InvertedRamp {
         return InvertedRampIterator<Ramp, InvertedRamp>(_ramp.end());
     }
 
-    unsigned int size() { return _ramp.size(); };
+    unsigned int size() const { return _ramp.size(); };
 
   private:
     Ramp _ramp;

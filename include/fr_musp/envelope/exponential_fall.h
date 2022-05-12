@@ -27,7 +27,7 @@ class ExponentialFall {
 
     iterator end() { return {this, _endIndex + 1}; }
 
-    unsigned int size() { return _endIndex + 1; }
+    unsigned int size() const { return _endIndex + 1; }
 
   private:
     ExponentialRise _exponentialRise;

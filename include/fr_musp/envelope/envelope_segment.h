@@ -17,13 +17,15 @@
 
 namespace fr_musp::envelope {
 
-typedef std::variant<ExponentialFall, ExponentialRise, InvertedRamp,
-                     LogarithmicFall, LogarithmicRise, Pulse, Ramp, Triangle,
-                     InvertedTriangle, Constant>
+typedef std::variant<std::monostate, ExponentialFall, ExponentialRise,
+                     InvertedRamp, LogarithmicFall, LogarithmicRise, Pulse,
+                     Ramp, Triangle, InvertedTriangle, Constant>
     EnvelopeGeneratorVariant;
 
 class EnvelopeSegment {
   public:
+    EnvelopeSegment() = default;
+
     explicit EnvelopeSegment(EnvelopeGeneratorVariant &&envelope, float scale,
                              float offset)
         : _envelope(envelope), _scale(scale), _offset(offset) {}
@@ -64,13 +66,14 @@ class EnvelopeSegment {
 
     OperatorBasedIterator<EnvelopeSegment> end() { return {this, size()}; }
 
-  private:
-    EnvelopeGeneratorVariant _envelope;
-    float _scale;
-    float _offset;
+    [[nodiscard]] bool empty() const {
+        return std::holds_alternative<std::monostate>(_envelope);
+    }
 
-    unsigned int size() {
-        if (std::holds_alternative<Constant>(_envelope)) {
+    [[nodiscard]] unsigned int size() const {
+        if (std::holds_alternative<std::monostate>(_envelope)) {
+            return false;
+        } else if (std::holds_alternative<Constant>(_envelope)) {
             return std::get<Constant>(_envelope).size();
         } else if (std::holds_alternative<ExponentialFall>(_envelope)) {
             return std::get<ExponentialFall>(_envelope).size();
@@ -94,6 +97,11 @@ class EnvelopeSegment {
             throw std::exception("Unknown envelope type");
         }
     }
+
+  private:
+    EnvelopeGeneratorVariant _envelope;
+    float _scale{};
+    float _offset{};
 };
 
 } // namespace fr_musp::envelope

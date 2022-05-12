@@ -21,7 +21,8 @@ add_library(fr_musp
   ../include/fr_musp/envelope/envelope_segment.h
   ../include/fr_musp/envelope/operator_based_iterator.h
   ../include/fr_musp/envelope/constant.h
-  ../include/fr_musp/envelope/inverted_triangle.h)
+  ../include/fr_musp/envelope/inverted_triangle.h
+  ../include/fr_musp/envelope/envelope_chain.h)
 
 target_include_directories(fr_musp PUBLIC ../include)
 

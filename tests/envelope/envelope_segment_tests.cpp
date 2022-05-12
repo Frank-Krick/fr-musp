@@ -6,10 +6,27 @@ using namespace fr_musp::envelope;
 using namespace std::chrono;
 using namespace Catch;
 
+TEST_CASE("The empty envelope segment") {
+    EnvelopeSegment envelopeSegment;
+
+    SECTION("Should be size 0") {
+        REQUIRE(envelopeSegment.size() == 0);
+    }
+
+    SECTION("Should signal if it's empty") {
+        REQUIRE(envelopeSegment.empty());
+    }
+}
+
 TEST_CASE("The envelope segment containing a constant") {
     milliseconds length(1000);
     unsigned int sampleRate(40000);
     Constant constant(length, sampleRate);
+
+    SECTION("Should not be empty") {
+        EnvelopeSegment envelopeSegment(constant, 0.0f, 0.0f);
+        REQUIRE_FALSE(envelopeSegment.empty());
+    }
 
     SECTION("Should scale an envelope") {
         float scale(0.5f);
